@@ -1,9 +1,14 @@
 import { Router } from 'express';
 import { userRoutes } from './user.routes';
+import { accountRoutes } from './account.routes';
+import { categoryRoutes } from './category.routes';
+import { transactionRoutes } from './transaction.routes';
 
 const routes = Router();
 
-// Define que todas as rotas de usuário vão começar com /users
 routes.use('/users', userRoutes);
+routes.use('/accounts', accountRoutes);
+routes.use('/categories', categoryRoutes);
+routes.use('/transactions', transactionRoutes);
 
 export { routes };

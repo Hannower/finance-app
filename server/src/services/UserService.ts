@@ -1,8 +1,8 @@
+import bcrypt from 'bcryptjs';
 import { prisma } from '../lib/prisma';
 
 export class UserService {
   async createUser(name: string, email: string, password: string) {
-    // 1. Verifica se o e-mail já está cadastrado
     const userExists = await prisma.user.findUnique({
       where: { email },
     });
@@ -11,12 +11,14 @@ export class UserService {
       throw new Error('Usuário já cadastrado com este e-mail.');
     }
 
-    // 2. Salva o novo usuário no PostgreSQL via Prisma
+    // Gera o hash da senha com salt de 8
+    const passwordHash = await bcrypt.hash(password, 8);
+
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password,
+        password: passwordHash,
       },
       select: {
         id: true,
